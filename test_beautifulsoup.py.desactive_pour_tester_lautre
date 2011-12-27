@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+import BeautifulSoup
+import unittest
+
+class Test_BeautifulSoup(unittest.TestCase):
+	def test_searchtag(self):
+		html_data="""
+				<html>
+					<head>
+					<title> un titre de page </title>
+					</head>
+
+					<body>
+					<h1> un titre de chapitre</h1>
+					<p> un paragraphe </p>
+					<div class="tel">023020300220</div>
+					<body>
+
+				</html>"""
+		soup = BeautifulSoup.BeautifulSoup( html_data )
+#		self.assertEqual(type(soup), "BeautifulSoup")
+		firstparag = soup.findAll('p')[0]
+		self.assertEqual(firstparag, "<p> un paragraphe </p>")
+	
+	def test_search_attribut(self):
+		html_data = open ("rechercheClassique.do.html")
+		soup = BeautifulSoup.BeautifulSoup( html_data )
+		mydiv = soup.findAll("div", attrs = { "class" : "visitCardContent" })
+		self.assertEqual(mydiv, "<p> un paragraphe </p>")
+		html_data.close()
+
+#	def test_search_nom_scte_iter(self):
+#		html_data = open ("rechercheClassique.do.html")
+#		iter_noeud_scte = (a for soup.div if soup.div['class'] == "visitCardContent")
+#		for noeud in iter_noeud_scte:
+#			nom_scte = noeud.next.next.string
+#			print nom_scte
+#			self.assertEqual(nom_scte, "compta")
+#		html_data.close()
+
+	def test_search_nom_scte_basic(self):
+		html_data = open ("rechercheClassique.do.html")
+		soup = BeautifulSoup.BeautifulSoup( html_data )
+		for noeud in soup.div:
+			if noeud['class'] in "visitCardContent":
+				societe = getsociete(noeud)
+				print societe
+		html_data.close()
+
